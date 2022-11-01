@@ -1,3 +1,5 @@
+-- Lab 16 --
+
 CREATE TABLE songs(
 	id int PRIMARY KEY,
 	name varchar(64) NOT NULL,
