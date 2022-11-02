@@ -1,5 +1,7 @@
 package lab6;
 
+import lab7.OverBalanceException;
+
 public class PremiumCustomer extends Customer implements Premium {
 	private int vipCard;
 	private int years;
@@ -18,10 +20,17 @@ public class PremiumCustomer extends Customer implements Premium {
 	}
 	
 	public void buy() {
-		items = "";
+//		items = "";
+//		cartCost = 0.0;
+//		balance -= discountedCartPrice;
 		double discountedCartPrice = discountPrice(cartCost);
-		balance -= discountedCartPrice;
-		cartCost = 0.0;
+		
+		System.out.println(balance);
+		System.out.println(discountedCartPrice);
+		
+		if (balance < discountedCartPrice) {
+			throw new OverBalanceException();
+		}
 	}
 	
 	public String getName() {
@@ -44,8 +53,8 @@ public class PremiumCustomer extends Customer implements Premium {
 		return items;
 	}
 	
-	public void setItems(String newItemsString) {
-		this.items = newItemsString;
+	public void setItems(String newItems) {
+		this.items = newItems;
 	}
 	
 	public double getCartCost() {
