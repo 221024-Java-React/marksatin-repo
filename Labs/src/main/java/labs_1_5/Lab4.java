@@ -1,3 +1,4 @@
+package labs_1_5;
 
 public class Lab4 {
 	int[] numbers = new int[100];
