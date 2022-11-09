@@ -12,40 +12,35 @@ public class JDBCConnectionUtil {
 	private static JDBCConnectionUtil util;
 	private static Properties props = new Properties();
 	
-	private JDBCConnectionUtil() {}
+	private JDBCConnectionUtil() {
+		ClassLoader classLoader = getClass().getClassLoader();
+		InputStream inStream = classLoader.getResourceAsStream("jdbc.properties");
+		
+		try {
+			props.load(inStream);			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static JDBCConnectionUtil getInstance() {
 		if (util == null) {
 			util = new JDBCConnectionUtil();
 		}
 		
-		System.out.println("util: " + util);
 		return util;
 	}
 	
-	
-	
 	public Connection getConnection() {
 		Connection dbCon = null;
-		System.out.println("dbCon initial: " + dbCon);
 		
 		try {
-			ClassLoader classLoader = getClass().getClassLoader();
-			InputStream inStream = classLoader.getResourceAsStream("jdbc.properties");
-			
-			System.out.println("inStream: " + inStream);
-			
-			String url = "";
-			String username = "";
-			String password = "";
-			
-			props.load(inStream);
+			String url = props.getProperty("url");
+			String username = props.getProperty("username");
+			String password = props.getProperty("password");
 			
 			dbCon = DriverManager.getConnection(url, username, password);
-			System.out.println("dbCon updated: " + dbCon);
 			
-		} catch (IOException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -22,8 +22,7 @@ public class UserDaoJDBC implements UserDao {
 		try {
 			Connection connection = dbConUtil.getConnection();
 			
-			String sql = "INSERT INTO users (role, first_name, last_name, email, password) VALUES" +
-					"(?,?,?,?,?)";
+			String sql = "INSERT INTO users (role, first_name, last_name, email, password) VALUES (?,?,?,?,?)";
 			
 			PreparedStatement prepState = connection.prepareStatement(sql);
 			

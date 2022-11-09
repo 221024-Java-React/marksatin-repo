@@ -2,7 +2,8 @@ package com.proj1.models;
 
 public class Ticket{
 	
-	private int id;
+	private int ticketId;
+	private int userId;
 	private float amount;
 	private String description;
 	private TicketStatus status;
@@ -11,14 +12,23 @@ public class Ticket{
 		super();
 	}
 	
-	public Ticket(int id, float amount, String description, TicketStatus status) {
+	public Ticket(int ticketId, int userId, float amount, String description, TicketStatus status) {
 		super();
-		this.id = id;
+		this.ticketId = ticketId;
+		this.userId = userId;
 		this.amount = amount;
 		this.description = description;
 		this.status = status;
 	}
 	
+	public Ticket(int userId, float amount, String description, TicketStatus status) {
+		super();
+		this.userId = userId;
+		this.amount = amount;
+		this.description = description;
+		this.status = status;
+	}
+
 	public Ticket(float amount, String description, TicketStatus status) {
 		super();
 		this.amount = amount;
@@ -26,12 +36,20 @@ public class Ticket{
 		this.status = status;
 	}
 
-	public int getId() {
-		return id;
+	public int getTicketId() {
+		return ticketId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setTicketId(int ticketId) {
+		this.ticketId = ticketId;
+	}
+	
+	public int getUserId() {
+		return ticketId;
+	}
+
+	public void setUserId(int ticketId) {
+		this.ticketId = ticketId;
 	}
 
 	public float getAmount() {
@@ -60,6 +78,7 @@ public class Ticket{
 
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", amount=" + amount + ", description=" + description + ", status=" + status + "]";
+		return "Ticket [ticketId=" + ticketId + ", userId=" + userId + ", amount=" + amount + ", description="
+				+ description + ", status=" + status + "]";
 	}
 }

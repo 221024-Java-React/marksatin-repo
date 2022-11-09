@@ -10,7 +10,6 @@ import com.proj1.services.UserService;
 
 import io.javalin.http.Handler;
 
-// This is where we register all of our route handling logic for the User model
 public class UserController {
 
 	private UserService uServ;
@@ -32,6 +31,9 @@ public class UserController {
 	public Handler handleLogin = (ctx) -> {
 		Map<String, String> body = oMapper.readValue(ctx.body(), LinkedHashMap.class);		
 		User loggedInUser = uServ.loginUser(body.get("email"), body.get("password"));
+		
+		// Set Session cookie
+		ctx.req().getSession().setAttribute("user", loggedInUser.getId());
 		
 		ctx.status(200);
 		ctx.result(oMapper.writeValueAsString(loggedInUser));
@@ -58,5 +60,12 @@ public class UserController {
 		
 		ctx.status(204);
 		ctx.result("SUCCESS: The user's data was deleted.");
+	};
+	
+	public Handler handleLogout = (ctx) -> {
+		ctx.req().getSession().invalidate();
+		
+		ctx.status(200);
+		ctx.result("You have successfully logged out.");
 	};
 }
