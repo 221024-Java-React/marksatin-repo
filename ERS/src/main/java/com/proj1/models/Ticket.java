@@ -35,6 +35,12 @@ public class Ticket{
 		this.description = description;
 		this.status = status;
 	}
+	
+	public Ticket(float amount, String description) {
+		super();
+		this.amount = amount;
+		this.description = description;
+	}
 
 	public int getTicketId() {
 		return ticketId;

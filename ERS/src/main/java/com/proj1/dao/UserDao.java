@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.proj1.models.User;
 
-// This interface handles User CRUD operations for the User DAO
 public interface UserDao {
 
 	public void addUser(User u);

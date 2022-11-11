@@ -3,7 +3,7 @@ package com.proj1.models;
 public class User {
 	
 	private int id;
-	private CompanyRole role;
+	private UserRole role;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -13,7 +13,7 @@ public class User {
 		super();
 	}
 
-	public User(int id, CompanyRole role, String firstName, String lastName, String email, String password) {
+	public User(int id, UserRole role, String firstName, String lastName, String email, String password) {
 		super();
 		this.id = id;
 		this.role = role;
@@ -23,11 +23,32 @@ public class User {
 		this.password = password;
 	}
 
-	public User(CompanyRole role, String firstName, String lastName, String email, String password) {
+	public User(UserRole role, String firstName, String lastName, String email, String password) {
 		super();
 		this.role = role;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+	}
+	
+	public User(String firstName, String lastName, String email, String password) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+	}
+
+	public User(String firstName, String email, String password) {
+		super();
+		this.firstName = firstName;
+		this.email = email;
+		this.password = password;
+	}
+
+	public User(String email, String password) {
+		super();
 		this.email = email;
 		this.password = password;
 	}
@@ -40,11 +61,11 @@ public class User {
 		this.id = id;
 	}
 
-	public CompanyRole getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(CompanyRole role) {
+	public void setRole(UserRole role) {
 		this.role = role;
 	}
 

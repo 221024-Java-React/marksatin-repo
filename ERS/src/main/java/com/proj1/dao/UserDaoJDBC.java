@@ -8,7 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.proj1.models.CompanyRole;
+import com.proj1.models.UserRole;
+import com.proj1.exceptions.UserAlreadyExistsException;
 import com.proj1.models.User;
 import com.proj1.utils.JDBCConnectionUtil;
 
@@ -26,8 +27,8 @@ public class UserDaoJDBC implements UserDao {
 			
 			PreparedStatement prepState = connection.prepareStatement(sql);
 			
-			prepState.setInt(1, u.getRole().ordinal() + 1);
-			prepState.setString(2,  u.getFirstName());
+			prepState.setInt(1, 1);		// Default to Employee which is role_id 1				
+			prepState.setString(2, u.getFirstName());
 			prepState.setString(3, u.getLastName());
 			prepState.setString(4, u.getEmail());
 			prepState.setString(5, u.getPassword());
@@ -36,6 +37,7 @@ public class UserDaoJDBC implements UserDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new UserAlreadyExistsException();
 		}
 	}
 
@@ -47,7 +49,7 @@ public class UserDaoJDBC implements UserDao {
 		try {
 			Connection connection = dbConUtil.getConnection();
 			
-			String sql = "SELECT * FROM users";
+			String sql = "SELECT * FROM users ORDER BY id ASC";
 			
 			Statement statement = connection.createStatement();
 			
@@ -59,9 +61,11 @@ public class UserDaoJDBC implements UserDao {
 				u.setId(rs.getInt(1));
 				
 				if (rs.getInt(2) == 1) {
-					u.setRole(CompanyRole.EMPLOYEE);
+					u.setRole(UserRole.EMPLOYEE);
+				} else if (rs.getInt(2) == 2) {
+					u.setRole(UserRole.MANAGER);
 				} else {
-					u.setRole(CompanyRole.MANAGER);
+					u.setRole(UserRole.ADMIN);
 				}
 				
 				u.setFirstName(rs.getString(3));
@@ -75,7 +79,7 @@ public class UserDaoJDBC implements UserDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return uList;
 	}
 
@@ -100,9 +104,11 @@ public class UserDaoJDBC implements UserDao {
 				u.setId(rs.getInt(1));
 				
 				if (rs.getInt(2) == 1) {
-					u.setRole(CompanyRole.EMPLOYEE);
+					u.setRole(UserRole.EMPLOYEE);
+				} else if (rs.getInt(2) == 2) {
+					u.setRole(UserRole.MANAGER);
 				} else {
-					u.setRole(CompanyRole.MANAGER);
+					u.setRole(UserRole.ADMIN);
 				}
 				
 				u.setFirstName(rs.getString(3));
@@ -139,9 +145,11 @@ public class UserDaoJDBC implements UserDao {
 				u.setId(rs.getInt(1));
 				
 				if (rs.getInt(2) == 1) {
-					u.setRole(CompanyRole.EMPLOYEE);
+					u.setRole(UserRole.EMPLOYEE);
+				} else if (rs.getInt(2) == 2) {
+					u.setRole(UserRole.MANAGER);
 				} else {
-					u.setRole(CompanyRole.MANAGER);
+					u.setRole(UserRole.ADMIN);
 				}
 				
 				u.setFirstName(rs.getString(3));
@@ -155,7 +163,6 @@ public class UserDaoJDBC implements UserDao {
 		}
 		
 		return u;
-		
 	}
 
 
@@ -169,23 +176,23 @@ public class UserDaoJDBC implements UserDao {
 			
 			PreparedStatement prepState = connection.prepareStatement(sql);
 			
-			if (u.getRole() == CompanyRole.EMPLOYEE) {
-				prepState.setInt(2, 1);
+			if (u.getRole().equals(UserRole.EMPLOYEE)) {
+				prepState.setInt(1, 1);
 			} else {
-				prepState.setInt(2, 2);
-			}
+				prepState.setInt(1, 2);
+			} 
 			
-			prepState.setString(3, u.getFirstName());
-			prepState.setString(4, u.getLastName());
-			prepState.setString(5, u.getEmail());
-			prepState.setString(6, u.getPassword());
+			prepState.setString(2, u.getFirstName());
+			prepState.setString(3, u.getLastName());
+			prepState.setString(4, u.getEmail());
+			prepState.setString(5, u.getPassword());
+			prepState.setInt(6, u.getId());
 			
-			prepState.executeQuery();
+			prepState.execute();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
@@ -199,7 +206,7 @@ public class UserDaoJDBC implements UserDao {
 			PreparedStatement prepState = connection.prepareStatement(sql);
 			prepState.setInt(1, id);
 			
-			prepState.executeQuery();
+			prepState.execute();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -1,36 +1,42 @@
 package com.proj1.services;
 
+import java.util.List;
+
 import com.proj1.dao.TicketDao;
+import com.proj1.exceptions.TicketAlreadyProcessedException;
+import com.proj1.exceptions.TicketDoesNotExistException;
 import com.proj1.models.Ticket;
 import com.proj1.models.TicketStatus;
 
 public class TicketService {
 
-	private TicketDao ticketDao;
+	private TicketDao tDao;
 	
-	public TicketService(TicketDao ticketDao) {
-		this.ticketDao = ticketDao;
+	public TicketService(TicketDao tDao) {
+		this.tDao = tDao;
 	}
 	
-	public void submitNewTicket(Ticket t) {
-		ticketDao.addNewTicket(t);
+	public void addTicket(int userId, Ticket t) {
+		tDao.addTicket(userId, t);
 	}
 	
 	public void updateTicketStatus(int ticketId, TicketStatus newStatus) {
-		ticketDao.setTicketStatus(ticketId, newStatus);
+		tDao.setTicketStatus(ticketId, newStatus);
 	}
 	
-//	public ArrayList<Ticket> getSubmittedTicketsByEmployee(String email) {
-//		User u = userDao.getUserByEmail(email);
-//		ArrayList<Ticket> submittedTickets = new ArrayList<Ticket>();
-//				
-//		if (u.getRole().equals(CompanyRole.EMPLOYEE)) {
-//			submittedTickets = u.getSubmittedTickets();			
-//		} else {
-//			submittedTickets = null;
-//		}
-//		
-//		return submittedTickets;
-//	}
+	public List<Ticket> getAllTickets() {
+		return tDao.getAllTickets();
+	}
 	
+	public List<Ticket> getTicketsByStatus(TicketStatus status) {
+		return tDao.getTicketsByStatus(status);
+	}
+	
+	public Ticket getMostRecentTicket() {
+		return tDao.getMostRecentTicket();
+	}
+	
+	public Ticket getTicketById(int ticketId) {
+		return tDao.getTicketById(ticketId);
+	}
 }
